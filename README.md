@@ -37,11 +37,6 @@
 Реализовать регистрацию пользователей
 Добавить backend (Node.js)
 
-### Запуск проекта:
-* npm i — устанавливает зависимости;
-* npm run build - собрать и запаковать проект;
-* npm run dev — запускает проект на локальном сервере;
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
