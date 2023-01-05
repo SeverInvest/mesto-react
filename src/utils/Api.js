@@ -3,30 +3,41 @@ import connect from './connect.js'
 
 class Api {
   constructor(connect) {
-    this._connect = connect;
+    this._baseUrl = connect.baseUrl;
+    this._headers = connect.headers;
   }
 
-  _onError(result) {
+  _checkResponse(result) {
     if (result.ok) {
       return result.json();
     }
     return Promise.reject(`Ошибка: ${result.status}`);
   }
 
+  _request(url, options) {
+    return fetch(
+      `${this._baseUrl}${url}`,
+      Object.assign(options, { headers: this._headers })
+    )
+      .then(this._checkResponse)
+  }
+
   getInitialCards() {
-    return fetch(`${this._connect.baseUrl}/cards`, {
-      method: "GET",
-      headers: this._connect.headers
-    })
-      .then(this._onError)
+    return this._request(
+      '/cards',
+      {
+        method: "GET"
+      }
+    )
   }
 
   getUser() {
-    return fetch(`${this._connect.baseUrl}/users/me`, {
-      method: "GET",
-      headers: this._connect.headers
-    })
-      .then(this._onError)
+    return this._request(
+      '/users/me',
+      {
+        method: "GET"
+      }
+    )
   }
 
   getInitialData() {
@@ -34,46 +45,51 @@ class Api {
   }
 
   setUserInfo(info) {
-    return fetch(`${this._connect.baseUrl}/users/me`, {
-      method: 'PATCH',
-      headers: this._connect.headers,
-      body: JSON.stringify(info)
-    })
-      .then(this._onError)
+    return this._request(
+      '/users/me',
+      {
+        method: 'PATCH',
+        body: JSON.stringify(info)
+      }
+    )
   }
 
   setCard(info) {
-    return fetch(`${this._connect.baseUrl}/cards`, {
-      method: "POST",
-      headers: this._connect.headers,
-      body: JSON.stringify(info)
-    })
-      .then(this._onError)
+    return this._request(
+      '/cards',
+      {
+        method: "POST",
+        body: JSON.stringify(info)
+      }
+    )
   }
 
   toggleLikeCard({ idCard, methodCardLike }) {
-    return fetch(`${this._connect.baseUrl}/cards/${idCard}/likes`, {
-      method: methodCardLike,
-      headers: this._connect.headers
-    })
-      .then(this._onError)
+    return this._request(
+      `/cards/${idCard}/likes`,
+      {
+        method: methodCardLike
+      }
+    )
   }
 
   deleteCard(idCard) {
-    return fetch(`${this._connect.baseUrl}/cards/${idCard}`, {
-      method: "DELETE",
-      headers: this._connect.headers
-    })
-      .then(this._onError)
+    return this._request(
+      `/cards/${idCard}`,
+      {
+        method: "DELETE"
+      }
+    )
   }
 
   setAvatar(info) {
-    return fetch(`${this._connect.baseUrl}/users/me/avatar`, {
-      method: "PATCH",
-      headers: this._connect.headers,
-      body: JSON.stringify(info)
-    })
-      .then(this._onError)
+    return this._request(
+      '/users/me/avatar',
+      {
+        method: "PATCH",
+        body: JSON.stringify(info)
+      }
+    )
   }
 }
 
