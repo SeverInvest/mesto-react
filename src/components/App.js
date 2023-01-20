@@ -68,7 +68,8 @@ function App() {
     api.toggleLikeCard({ idCard: card._id, methodCardLike: isLiked ? "DELETE" : "PUT" })
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-      });
+      })
+      .catch(isError)
   }
 
   function handleCardDeleteClick(card) {
@@ -83,6 +84,7 @@ function App() {
         setCards((newArray) => newArray.filter((item) => card._id !== item._id));
         closeAllPopups();
       })
+      .catch(isError)
   }
 
   function handleAddPlaceSubmit(data) {
