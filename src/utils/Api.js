@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 import connect from './connect.js'
 
 class Api {
@@ -65,6 +65,7 @@ class Api {
   }
 
   toggleLikeCard({ idCard, methodCardLike }) {
+
     return this._request(
       `/cards/${idCard}/likes`,
       {
